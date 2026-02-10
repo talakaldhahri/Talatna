@@ -1,7 +1,12 @@
-//
-//  Plan.swift
-//  Talatna
-//
-//  Created by Tala Aldhahri on 16/08/1447 AH.
-//
+ import Foundation
+
+struct Plan: Identifiable {
+    let id = UUID()
+    let title: String
+    let date: String
+    let time: String
+    let imageName: String
+    let isShared: Bool
+}
+
 
