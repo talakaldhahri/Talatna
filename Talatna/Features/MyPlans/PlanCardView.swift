@@ -15,11 +15,12 @@ struct PlanCardView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(plan.title)
                     .font(.headline)
+// dana replaced the plan.date in text with the below line since it caused an error
+                Text(plan.date, style: .date)
 
-                Text(plan.date)
                     .foregroundColor(.gray)
-
-                Text(plan.time)
+                // dana replaced the plan.time inside text since it deisplayed an error saying there is no value of type .time in the plan in core
+                Text(plan.date, style: .time)
                     .foregroundColor(.blue)
             }
 
