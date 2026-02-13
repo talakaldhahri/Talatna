@@ -36,3 +36,5 @@ struct PlanCardView: View {
         .shadow(radius: 6)
     }
 }
+ 
+
