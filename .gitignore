@@ -1,0 +1,82 @@
+# =========================
+# Xcode
+# =========================
+
+# Build folders
+build/
+DerivedData/
+
+# Xcode user data
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.build/
+Package.resolved
+
+# =========================
+# CocoaPods
+# =========================
+
+Pods/
+Podfile.lock
+
+# =========================
+# Carthage
+# =========================
+
+Carthage/Build/
+
+# =========================
+# Fastlane
+# =========================
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# =========================
+# Archives
+# =========================
+
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+# =========================
+# macOS
+# =========================
+
+.DS_Store
+
+# =========================
+# Environment / Secrets
+# =========================
+
+.env
+Secrets.plist
+GoogleService-Info.plist
+
+# =========================
+# Swift Playgrounds
+# =========================
+
+timeline.xctimeline
+playground.xcworkspace
+
+# =========================
+# Test Coverage
+# =========================
+
+*.xccovarchive
+*.xccovreport
