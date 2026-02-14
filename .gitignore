@@ -80,3 +80,6 @@ playground.xcworkspace
 
 *.xccovarchive
 *.xccovreport
+
+# files to ignore (if any)
+/helper-sara
