@@ -1,44 +1,34 @@
 import SwiftUI
 
-struct LoginView: View {
+struct ForgotPasswordView: View {
     @State private var email: String = ""
-    @State private var password: String = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 20) {
-                    Spacer().frame(height: 40)
+                    Spacer().frame(height: 60)
 
-                    Text("Sign in")
-                        .font(.system(size: 30, weight: .bold))
+                    Text("Forgot Password")
+                        .font(.system(size: 28, weight: .bold))
 
-                    Text("Enter your email and password to sign in")
+                    Text("Enter your email to reset password")
                         .font(.system(size: 15))
                         .foregroundColor(.gray)
 
-                    VStack(spacing: 14) {
-                        TextField("Email Address", text: $email)
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                            .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                            )
+                    TextField("Email Address", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
+                        .padding(.top, 8)
 
-                        SecureField("Password", text: $password)
-                            .padding()
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                            )
-                    }
-                    .padding(.top, 8)
-
-                    NavigationLink(destination: MyPlansView()) {
-                        Text("Continue")
+                    NavigationLink(destination: ResetPasswordView()) {
+                        Text("Reset password")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -48,19 +38,10 @@ struct LoginView: View {
                     }
 
                     HStack(spacing: 4) {
-                        Text("Forgot password?")
+                        Text("Remembered your password?")
                             .font(.system(size: 14))
                             .foregroundColor(.gray)
-                        NavigationLink("Reset password", destination: ForgotPasswordView())
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(Color("SecondaryColor"))
-                    }
-
-                    HStack(spacing: 4) {
-                        Text("Don't have an account?")
-                            .font(.system(size: 14))
-                            .foregroundColor(.gray)
-                        NavigationLink("Register", destination: SignUpView())
+                        Button("Sign in") { dismiss() }
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(Color("SecondaryColor"))
                     }
@@ -93,6 +74,6 @@ struct LoginView: View {
 
 #Preview {
     NavigationStack {
-        LoginView()
+        ForgotPasswordView()
     }
 }

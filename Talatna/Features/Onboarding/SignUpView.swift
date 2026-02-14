@@ -1,8 +1,10 @@
 import SwiftUI
 
-struct LoginView: View {
+struct SignUpView: View {
+    @State private var fullName: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var confirmPassword: String = ""
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -11,15 +13,23 @@ struct LoginView: View {
                 VStack(spacing: 20) {
                     Spacer().frame(height: 40)
 
-                    Text("Sign in")
-                        .font(.system(size: 30, weight: .bold))
+                    Text("Create an account")
+                        .font(.system(size: 28, weight: .bold))
 
-                    Text("Enter your email and password to sign in")
+                    Text("Enter your information to sign up for Talatna")
                         .font(.system(size: 15))
                         .foregroundColor(.gray)
 
                     VStack(spacing: 14) {
-                        TextField("Email Address", text: $email)
+                        TextField("Full Name", text: $fullName)
+                            .autocapitalization(.words)
+                            .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            )
+
+                        TextField("Email address", text: $email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                             .padding()
@@ -34,11 +44,18 @@ struct LoginView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                             )
+
+                        SecureField("Confirm Password", text: $confirmPassword)
+                            .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            )
                     }
                     .padding(.top, 8)
 
-                    NavigationLink(destination: MyPlansView()) {
-                        Text("Continue")
+                    Button(action: {}) {
+                        Text("Sign up")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -48,19 +65,10 @@ struct LoginView: View {
                     }
 
                     HStack(spacing: 4) {
-                        Text("Forgot password?")
+                        Text("Already have an account?")
                             .font(.system(size: 14))
                             .foregroundColor(.gray)
-                        NavigationLink("Reset password", destination: ForgotPasswordView())
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(Color("SecondaryColor"))
-                    }
-
-                    HStack(spacing: 4) {
-                        Text("Don't have an account?")
-                            .font(.system(size: 14))
-                            .foregroundColor(.gray)
-                        NavigationLink("Register", destination: SignUpView())
+                        Button("Sign in") { dismiss() }
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(Color("SecondaryColor"))
                     }
@@ -93,6 +101,6 @@ struct LoginView: View {
 
 #Preview {
     NavigationStack {
-        LoginView()
+        SignUpView()
     }
 }
