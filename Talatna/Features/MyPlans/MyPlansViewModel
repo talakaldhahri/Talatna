@@ -1,0 +1,79 @@
+ import Foundation
+import SwiftUI
+
+final class MyPlansViewModel: ObservableObject {
+
+    enum FilterType: String, CaseIterable {
+        case all = "All"
+        case shared = "Shared"
+    }
+
+    @Published var filter: FilterType = .all
+    @Published var plans: [Plan] = []
+
+    init(useMockData: Bool = true) {
+        if useMockData {
+            loadMockData()
+        }
+    }
+
+    // MARK: - Filtered Plans
+
+    var filteredPlans: [Plan] {
+        switch filter {
+        case .all:
+            return plans
+        case .shared:
+            return plans.filter { $0.isShared }
+        }
+    }
+
+    // MARK: - Mock Data
+
+    private func loadMockData() {
+
+        let now = Date()
+
+        let stop1 = Stop(
+            name: "Cafe Bateel",
+            location: "Riyadh",
+            category: "Cafe",
+            priceRange: "$$",
+            timeWindow: TimeWindow(
+                startTime: now,
+                endTime: Calendar.current.date(byAdding: .hour, value: 1, to: now)
+            )
+        )
+
+        let stop2 = Stop(
+            name: "Boulevard Walk",
+            location: "Riyadh",
+            category: "Outdoor",
+            priceRange: "$",
+            timeWindow: TimeWindow(
+                startTime: Calendar.current.date(byAdding: .hour, value: 2, to: now),
+                endTime: Calendar.current.date(byAdding: .hour, value: 4, to: now)
+            )
+        )
+
+        let plan1 = Plan(
+            title: "Evening With Friends",
+            date: now,
+            stops: [stop1, stop2],
+            imageName: "bookmark.fill",   // SF Symbol
+            shareableLink: URL(string: "https://talatna.app/plan1")!,
+            isShared: true
+        )
+
+        let plan2 = Plan(
+            title: "Girls Fun Night",
+            date: now,
+            stops: [stop1],
+            imageName: "heart.fill",
+            shareableLink: URL(string: "https://talatna.app/plan2")!,
+            isShared: false
+        )
+
+        self.plans = [plan1, plan2]
+    }
+}
