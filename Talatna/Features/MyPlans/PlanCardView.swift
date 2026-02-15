@@ -38,4 +38,7 @@ struct PlanCardView: View {
     }
 }
  
+//#Preview {
+ //   PlanCardView()
+//}
 
