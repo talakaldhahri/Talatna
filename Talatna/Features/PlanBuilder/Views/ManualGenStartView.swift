@@ -1,247 +1,234 @@
-//
+
+
+//                DANA
+
+
 //  ManualGenStartView.swift
 //  Talatna
 //
 //  Created by Dana Alobaid on 13/02/2026.
 //
+//
+//  ManualGenStartView.swift
+//  Talatna
+//
+//  Location: Features/PlanBuilder/Views/ManualGenStartView.swift
+//
+//  NOTE (architecture): This view no longer owns bottom tabs or core draft state.
+//  It binds to ManualGenViewModel (Features/PlanBuilder/ViewModels/ManualGenViewModel.swift)
+//  so the draft plan persists across the manual-planning flow.
+//
 
 import SwiftUI
 
 struct ManualGenStartView: View {
-    
-    // UI-only state
-    @State private var planName: String = ""
-    @State private var selectedDate: Date = Date()
-    @State private var selectedTime: Date = Date()
-    @State private var stops: Double = 4
-    
-    @State private var selectedTab: BottomTab = .create
-    
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                
-                // Top Bar
-                HStack(spacing: 10) {
-                    Button {
-                        print("Back tapped")
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
-                            .font(.system(size: 18, weight: .semibold))
-                    }
-                    
-                    Text("Create Outing Plan Manually")
-                        .font(.headline)
-                    
-                    Spacer()
-                }
-                .padding(.horizontal, 18)
-                .padding(.top, 12)
-                
-                // Card (pulled down a bit)
-                VStack(spacing: 18) {
-                    
-                    // Image chooser row (UI-only placeholder)
-                    HStack(alignment: .center, spacing: 16) {
-                        
-                        Button {
-                            print("Choose image tapped")
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(.systemGray6))
-                                    .frame(width: 110, height: 110)
-                                
-                                Image(systemName: "calendar")
-                                    .font(.system(size: 40))
-                                    .foregroundColor(.gray)
-                                
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 34, height: 34)
-                                    .overlay(
-                                        Image(systemName: "camera")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.gray)
-                                    )
-                                    .offset(x: 38, y: 38)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        
-                        // show fully on ONE line
-                        Text("Choose Outing Plan Image")
-                            .foregroundColor(.gray)
-                            .font(.subheadline)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.85)   // if screen is small, it shrinks slightly instead of cutting
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Spacer(minLength: 0)
-                    }
-                    
-                    // Plan Name
-                    HStack(spacing: 12) {
-                        Text("Plan Name:")
-                            .font(.headline)
-                            .frame(width: 110, alignment: .leading)
-                        
-                        TextField("Evening With Friends", text: $planName)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 12)
-                            .frame(maxWidth: .infinity)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                    }
-                    
-                    // Date
-                    HStack(spacing: 12) {
-                        Text("Date:")
-                            .font(.headline)
-                            .frame(width: 110, alignment: .leading)
-                        
-                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                    }
-                    
-                    // Time
-                    HStack(spacing: 12) {
-                        Text("Time:")
-                            .font(.headline)
-                            .frame(width: 110, alignment: .leading)
-                        
-                        DatePicker("", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
-                            .datePickerStyle(.compact)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                    }
-                    
-                    // Number of stops
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack{
-                            Text("Number of Stops:")
-                                .font(.headline)
-                            
-                            Slider(value: $stops, in: 1...10, step: 1)
-                                .tint(.orange)
-                            
-                            HStack {
-                                Text("1")
-                                Spacer()
-                                Text("\(Int(stops))")
-                                Spacer()
-                                Text("10")
-                            }
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        }
-                    }
-                        
-                        // Done (UI only)
-                        Button {
-                            print("Done tapped")
-                        } label: {
-                            Text("Done")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(Color.orange)
-                                .cornerRadius(14)
-                                .shadow(radius: 4)
-                        }
-                        
-                    }
-                    .padding(18)
-                    .background(Color.white)
-                    .cornerRadius(22)
-                    .shadow(radius: 10)
-                    .padding(.horizontal, 18)
-                    .padding(.top, 18)
-                    
-                    Spacer() // pushes the card area upward, but bottom bar is pinned by safeAreaInset
-                }
-                .background(Color.white)
-                
-                // This pins the bottom bar  and allows a divider above it
-                .safeAreaInset(edge: .bottom) {
-                    VStack(spacing: 0) {
-                        Divider() // the thin separating line
-                        
-                        BottomMenuBar(selectedTab: $selectedTab)
-                            .padding(.vertical, 10)
-                            .background(Color.white)
-                    }
-                }
-            }
-        }
-    }
-    
-    //  Bottom Menu
-    
-    private enum BottomTab {
-        case home, create, calendar, profile
-    }
-    
-    private struct BottomMenuBar: View {
-        
-        @Binding var selectedTab: BottomTab
-        
-        var body: some View {
-            HStack {
-                tabButton(tab: .home, normalImage: "HomeTab", selectedImage: "HomeTabSelected")
-                
-                Spacer()
-                
-                tabButton(tab: .create,
-                          normalImage: "CreatePlanTab",
-                          selectedImage: "CreatePlanTabSelected",
-                          isCenterPlus: true)
-                
-                Spacer()
-                
-                tabButton(tab: .calendar, normalImage: "MyPlansTab", selectedImage: "MyPlansTabSelected")
-                
-                Spacer()
-                
-                tabButton(tab: .profile, normalImage: "ProfileTab", selectedImage: "ProfileTabSelected")
-            }
-            .padding(.horizontal, 34)
-        }
-        
-        @ViewBuilder
-        private func tabButton(
-            tab: BottomTab,
-            normalImage: String,
-            selectedImage: String,
-            isCenterPlus: Bool = false
-        ) -> some View {
-            
-            Button {
-                selectedTab = tab
-                print("Tab tapped:", tab)
-            } label: {
-                Image(selectedTab == tab ? selectedImage : normalImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: isCenterPlus ? 44 : 28, height: isCenterPlus ? 44 : 28)
-            }
-            .buttonStyle(.plain)
-        }
-    }
-    
-    #Preview {
-        ManualGenStartView()
+
+    // Keep the draft plan state inside the VM (NOT in @State here)
+    @StateObject private var viewModel: ManualGenViewModel
+
+    @Environment(\.dismiss) private var dismiss
+
+    // MARK: - Init (allows injection later)
+    init(viewModel: ManualGenViewModel = ManualGenViewModel()) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
+    var body: some View {
+        NavigationStack(path: $viewModel.path) {
+            content
+                .navigationTitle("Manual Plan")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
+                            }
+                        }
+                    }
+                }
+                .navigationDestination(for: ManualGenRoute.self) { route in
+                    switch route {
+                    case .mapSelection:
+                        MapSelectionView(viewModel: viewModel)
+
+                    case .planSummary:
+                        PlanSummaryView(viewModel: viewModel)
+                    }
+                }
+        }
+    }
+
+    private var content: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+
+                // Title / header area (keep your design here)
+                headerSection
+
+                // Plan name
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Plan name")
+                        .font(.headline)
+
+                    TextField("e.g., Friday outing", text: $viewModel.planName)
+                        .textInputAutocapitalization(.words)
+                        .autocorrectionDisabled(false)
+                        .padding(12)
+                        .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
+                }
+
+                // Date + time
+                HStack(spacing: 12) {
+                    dateCard
+                    timeCard
+                }
+
+                // Primary CTA
+                Button {
+                    viewModel.proceedFromStart()
+                } label: {
+                    Text("Next")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(RoundedRectangle(cornerRadius: 14).fill(viewModel.canProceedFromStart ? Color.accentColor : Color.gray.opacity(0.35)))
+                        .foregroundStyle(viewModel.canProceedFromStart ? Color.white : Color.secondary)
+                }
+                .disabled(!viewModel.canProceedFromStart)
+
+                // Optional helper text
+                if !viewModel.canProceedFromStart {
+                    Text("Enter a plan name to continue.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer(minLength: 8)
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 12)
+        }
+        .sheet(isPresented: $viewModel.showDatePickerSheet) {
+            datePickerSheet
+        }
+        .sheet(isPresented: $viewModel.showTimePickerSheet) {
+            timePickerSheet
+        }
+    }
+
+    // MARK: - Sections
+
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Create your plan")
+                .font(.title2)
+                .fontWeight(.bold)
+
+            Text("Set a name, date, and time, then add stops on the map.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.bottom, 4)
+    }
+
+    private var dateCard: some View {
+        Button {
+            viewModel.showDatePickerSheet = true
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Label("Date", systemImage: "calendar")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                Text(viewModel.formattedDate)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 14).fill(Color(.secondarySystemBackground)))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var timeCard: some View {
+        Button {
+            viewModel.showTimePickerSheet = true
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Label("Time", systemImage: "clock")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                Text(viewModel.formattedTime)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(14)
+            .background(RoundedRectangle(cornerRadius: 14).fill(Color(.secondarySystemBackground)))
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Sheets
+
+    private var datePickerSheet: some View {
+        NavigationStack {
+            VStack(spacing: 16) {
+                DatePicker(
+                    "Select date",
+                    selection: $viewModel.selectedDate,
+                    displayedComponents: [.date]
+                )
+                .datePickerStyle(.graphical)
+                .padding()
+
+                Spacer()
+            }
+            .navigationTitle("Date")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        viewModel.showDatePickerSheet = false
+                    }
+                }
+            }
+        }
+    }
+
+    private var timePickerSheet: some View {
+        NavigationStack {
+            VStack(spacing: 16) {
+                DatePicker(
+                    "Select time",
+                    selection: $viewModel.selectedTime,
+                    displayedComponents: [.hourAndMinute]
+                )
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .padding()
+
+                Spacer()
+            }
+            .navigationTitle("Time")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        viewModel.showTimePickerSheet = false
+                    }
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    ManualGenStartView()
+}

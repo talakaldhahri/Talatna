@@ -47,7 +47,7 @@ struct PlanDetailsView: View {
     }
 }
 
-//dana commented this out it casue an error of cannot find mockplan
-//#Preview {
-   // PlanDetailsView(plan: mockPlans.first!)
-//}
+
+#Preview {
+    PlanDetailsView(plan: MockPlans.first!)
+}
